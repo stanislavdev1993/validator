@@ -64,11 +64,7 @@ final class ResultSet implements IteratorAggregate
         $errors = [];
         foreach ($this->results as $attribute => $result) {
             if (!$result->isValid()) {
-                if ($result->getAttribute()) {
-                    $errors[$attribute][$result->getAttribute()] = $result->getErrors();
-                } else {
-                    $errors[$attribute] = $result->getErrors();
-                }
+                $errors[$attribute] = $result->getErrors();
             }
         }
 

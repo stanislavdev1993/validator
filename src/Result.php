@@ -11,16 +11,18 @@ final class Result
      */
     private array $errors = [];
 
-    private ?string $attribute = null;
-
     public function isValid(): bool
     {
         return $this->errors === [];
     }
 
-    public function addError(string $message): void
+    public function addError(string $message, string $attribute = null): void
     {
-        $this->errors[] = $message;
+        if ($attribute) {
+            $this->errors[$attribute][] = $message;
+        } else {
+            $this->errors[] = $message;
+        }
     }
 
     /**
@@ -29,15 +31,5 @@ final class Result
     public function getErrors(): array
     {
         return $this->errors;
-    }
-
-    public function setAttribute(string $attribute): void
-    {
-        $this->attribute = $attribute;
-    }
-
-    public function getAttribute(): ?string
-    {
-        return $this->attribute;
     }
 }

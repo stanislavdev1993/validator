@@ -49,6 +49,9 @@ final class Rules
         foreach ($this->rules as $rule) {
             $ruleResult = $rule->validate($value, $context);
             if ($ruleResult->isValid() === false) {
+                if ($ruleResult->getAttribute()) {
+                    $compoundResult->setAttribute($ruleResult->getAttribute());
+                }
                 $context->setParameter(self::PARAMETER_PREVIOUS_RULES_ERRORED, true);
                 foreach ($ruleResult->getErrors() as $message) {
                     $compoundResult->addError($message);

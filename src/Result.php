@@ -11,6 +11,8 @@ final class Result
      */
     private array $errors = [];
 
+    private ?string $attribute = null;
+
     public function isValid(): bool
     {
         return $this->errors === [];
@@ -27,5 +29,15 @@ final class Result
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    public function setAttribute(string $attribute): void
+    {
+        $this->attribute = $attribute;
+    }
+
+    public function getAttribute(): ?string
+    {
+        return $this->attribute;
     }
 }

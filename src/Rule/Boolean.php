@@ -71,12 +71,14 @@ final class Boolean extends Rule
 
         if (!$valid) {
             $result->addError(
-                $this->formatMessage(
-                    $this->message,
-                    [
-                        'true' => $this->trueValue === true ? 'true' : $this->trueValue,
-                        'false' => $this->falseValue === false ? 'false' : $this->falseValue,
-                    ]
+                $this->createError(
+                    $this->formatMessage(
+                        $this->message,
+                        [
+                            'true' => $this->trueValue === true ? 'true' : $this->trueValue,
+                            'false' => $this->falseValue === false ? 'false' : $this->falseValue,
+                        ]
+                    )
                 )
             );
         }

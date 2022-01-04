@@ -49,7 +49,11 @@ final class InRange extends Rule
         $result = new Result();
 
         if ($this->not === ArrayHelper::isIn($value, $this->range, $this->strict)) {
-            $result->addError($this->formatMessage($this->message));
+            $result->addError(
+                $this->createError(
+                    $this->formatMessage($this->message)
+                )
+            );
         }
 
         return $result;

@@ -30,7 +30,9 @@ final class Json extends Rule
         $result = new Result();
 
         if (!$this->isValidJson($value)) {
-            $result->addError($this->formatMessage($this->message));
+            $result->addError(
+                $this->createError($this->formatMessage($this->message))
+            );
         }
 
         return $result;

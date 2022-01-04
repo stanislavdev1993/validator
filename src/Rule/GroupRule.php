@@ -23,7 +23,9 @@ abstract class GroupRule extends Rule
     {
         $result = new Result();
         if (!$this->getRules()->validate($value, $context)->isValid()) {
-            $result->addError($this->formatMessage($this->message));
+            $result->addError(
+                $this->createError($this->formatMessage($this->message))
+            );
         }
 
         return $result;

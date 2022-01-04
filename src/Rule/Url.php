@@ -66,7 +66,9 @@ final class Url extends Rule
             }
         }
 
-        $result->addError($this->formatMessage($this->message));
+        $result->addError($this->createError(
+            $this->formatMessage($this->message)
+        ));
 
         return $result;
     }

@@ -7,7 +7,7 @@ namespace Yiisoft\Validator;
 final class Result
 {
     /**
-     * @psalm-var list<string>
+     * @psalm-var list<ErrorInterface>
      */
     private array $errors = [];
 
@@ -16,17 +16,13 @@ final class Result
         return $this->errors === [];
     }
 
-    public function addError(string $message, string $attribute = null): void
+    public function addError(ErrorInterface $error): void
     {
-        if ($attribute) {
-            $this->errors[$attribute][] = $message;
-        } else {
-            $this->errors[] = $message;
-        }
+        $this->errors[] = $error;
     }
 
     /**
-     * @psalm-return list<string>
+     * @psalm-return list<ErrorInterface>
      */
     public function getErrors(): array
     {

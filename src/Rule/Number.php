@@ -62,18 +62,26 @@ final class Number extends Rule
         $result = new Result();
 
         if (is_bool($value) || !is_scalar($value)) {
-            $result->addError($this->formatMessage($this->getNotANumberMessage(), ['value' => $value]));
+            $result->addError(
+                $this->createError($this->formatMessage($this->getNotANumberMessage(), ['value' => $value]))
+            );
             return $result;
         }
 
         $pattern = $this->asInteger ? $this->integerPattern : $this->numberPattern;
 
         if (!preg_match($pattern, NumericHelper::normalize($value))) {
-            $result->addError($this->formatMessage($this->getNotANumberMessage(), ['value' => $value]));
+            $result->addError(
+                $this->createError($this->formatMessage($this->getNotANumberMessage(), ['value' => $value]))
+            );
         } elseif ($this->min !== null && $value < $this->min) {
-            $result->addError($this->formatMessage($this->tooSmallMessage, ['min' => $this->min]));
+            $result->addError(
+                $this->createError($this->formatMessage($this->tooSmallMessage, ['min' => $this->min]))
+            );
         } elseif ($this->max !== null && $value > $this->max) {
-            $result->addError($this->formatMessage($this->tooBigMessage, ['max' => $this->max]));
+            $result->addError(
+                $this->createError($this->formatMessage($this->tooBigMessage, ['max' => $this->max]))
+            );
         }
 
         return $result;

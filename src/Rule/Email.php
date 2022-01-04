@@ -113,7 +113,7 @@ final class Email extends Rule
         }
 
         if ($valid === false) {
-            $result->addError($this->formatMessage($this->message));
+            $result->addError($this->createError($this->formatMessage($this->message)));
         }
 
         return $result;

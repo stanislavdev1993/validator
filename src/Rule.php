@@ -105,6 +105,22 @@ abstract class Rule implements RuleInterface, ParametrizedRuleInterface, Formatt
         );
     }
 
+    protected function createError(string $message, string $attribute = null): ErrorInterface
+    {
+        $error = new Error($message);
+
+        if ($attribute) {
+            $error->withAttribute($attribute);
+        }
+
+        return $error;
+    }
+
+    protected function getAttribute(ValidationContext $context = null): ?string
+    {
+        return $context ? $context->getAttribute() : null;
+    }
+
     /**
      * Add a PHP callable whose return value determines whether this rule should be applied.
      * By default, rule will always be applied.

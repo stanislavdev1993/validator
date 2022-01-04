@@ -52,7 +52,9 @@ final class MatchRegularExpression extends Rule
                 || ($this->not && !preg_match($this->pattern, $value)));
 
         if (!$valid) {
-            $result->addError($this->formatMessage($this->message));
+            $result->addError(
+                $this->createError($this->formatMessage($this->message))
+            );
         }
 
         return $result;

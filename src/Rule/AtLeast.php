@@ -56,11 +56,13 @@ final class AtLeast extends Rule
 
         if ($filledCount < $this->min) {
             $result->addError(
-                $this->formatMessage(
-                    $this->message,
-                    [
-                        'min' => $this->min,
-                    ]
+                $this->createError(
+                    $this->formatMessage(
+                        $this->message,
+                        [
+                            'min' => $this->min,
+                        ]
+                    )
                 )
             );
         }

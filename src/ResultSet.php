@@ -7,6 +7,8 @@ namespace Yiisoft\Validator;
 use ArrayIterator;
 use InvalidArgumentException;
 use IteratorAggregate;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\VarDumper\VarDumper;
 
 /**
  * ResultSet stores validation result of each attribute from {@link DataSetInterface}.
@@ -64,7 +66,25 @@ final class ResultSet implements IteratorAggregate
         $errors = [];
         foreach ($this->results as $attribute => $result) {
             if (!$result->isValid()) {
-                $errors[$attribute] = $result->getErrors();
+                foreach ($result->getErrors() as $error) {
+                    if ($error->getAttribute()) {
+                        if (strpos($error->getAttribute(), '.') === false) {
+                            $errors[$attribute][$error->getAttribute()][] = $error->getMessage();
+                        } else {
+                            $path = "$attribute.{$error->getAttribute()}";
+                            $value = ArrayHelper::getValueByPath($errors, $path) ?? [];
+                            $value[] = $error->getMessage();
+
+                            ArrayHelper::setValueByPath(
+                                $errors,
+                                "$attribute.{$error->getAttribute()}",
+                                $value
+                            );
+                        }
+                    } else {
+                        $errors[$attribute][] = $error->getMessage();
+                    }
+                }
             }
         }
 

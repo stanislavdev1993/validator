@@ -33,7 +33,9 @@ final class Each extends Rule
     {
         $result = new Result();
         if (!is_iterable($value)) {
-            $result->addError($this->incorrectInputMessage);
+            $result->addError(
+                $this->createError($this->incorrectInputMessage)
+            );
             return $result;
         }
 

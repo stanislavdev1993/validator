@@ -36,16 +36,20 @@ final class Subset extends Rule
         $result = new Result();
 
         if (!is_iterable($value)) {
-            $result->addError($this->formatMessage($this->iterableMessage));
+            $result->addError(
+                $this->createError($this->formatMessage($this->iterableMessage))
+            );
             return $result;
         }
 
         if (!ArrayHelper::isSubset($value, $this->values, $this->strict)) {
             $valuesString = '"' . implode('", "', (is_array($this->values) ? $this->values : iterator_to_array($this->values))) . '"';
 
-            $result->addError($this->formatMessage($this->subsetMessage, [
-                'values' => $valuesString,
-            ]));
+            $result->addError(
+                $this->createError($this->formatMessage($this->subsetMessage, [
+                    'values' => $valuesString,
+                ]))
+            );
         }
 
         return $result;

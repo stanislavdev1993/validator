@@ -30,7 +30,11 @@ final class Required extends Rule
         $result = new Result();
 
         if ($this->isEmpty(is_string($value) ? trim($value) : $value)) {
-            $result->addError($this->formatMessage($this->message));
+            $result->addError(
+                $this->createError(
+                    $this->formatMessage($this->message)
+                )
+            );
         }
 
         return $result;

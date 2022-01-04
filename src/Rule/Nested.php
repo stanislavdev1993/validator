@@ -13,6 +13,8 @@ use Yiisoft\Validator\Rule;
 use Yiisoft\Validator\RuleInterface;
 use Yiisoft\Validator\Rules;
 use Yiisoft\Validator\ValidationContext;
+use Yiisoft\VarDumper\VarDumper;
+
 use function is_array;
 use function is_object;
 
@@ -77,23 +79,32 @@ final class Nested extends Rule
     {
         $result = new Result();
         if (!is_object($value) && !is_array($value)) {
-            $result->addError(sprintf(
-                'Value should be an array or an object. %s given.',
-                gettype($value)
-            ));
+            $result->addError(
+                $this->createError(
+                    sprintf(
+                        'Value should be an array or an object. %s given.',
+                        gettype($value)
+                    ),
+                    $this->getAttribute($context)
+                )
+            );
             return $result;
         }
         $value = (array) $value;
 
         foreach ($this->rules as $valuePath => $rules) {
             $rulesSet = is_array($rules) ? $rules : [$rules];
+
             if ($this->errorWhenPropertyPathIsNotFound && !ArrayHelper::pathExists($value, $valuePath)) {
                 $result->addError(
-                    $this->formatMessage(
-                        $this->propertyPathIsNotFoundMessage,
-                        [
-                            'path' => $valuePath,
-                        ]
+                    $this->createError(
+                        $this->formatMessage(
+                            $this->propertyPathIsNotFoundMessage,
+                            [
+                                'path' => $valuePath,
+                            ]
+                        ),
+                        $this->getAttribute($context)
                     )
                 );
                 continue;
@@ -104,7 +115,8 @@ final class Nested extends Rule
 
             if ($itemResult->isValid() === false) {
                 foreach ($itemResult->getErrors() as $error) {
-                    $result->addError($error, $valuePath);
+                    $error->withAttribute($valuePath);
+                    $result->addError($error);
                 }
             }
         }
